@@ -1,11 +1,9 @@
 import {Router} from 'express'
 
-import userRoutes from "./userRoutes";
-import moduleRoutes from "./moduleRoutes";
+import eventRoutes from "./eventRoutes";
 
 const publicRouter = Router();
 
-publicRouter.use('/users',userRoutes);
-publicRouter.use('/modules',moduleRoutes);
+publicRouter.use('/event',eventRoutes);
 
 export default publicRouter;

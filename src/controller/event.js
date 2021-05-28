@@ -1,10 +1,9 @@
-import * as userService from "../services/user"
+import * as eventService from "../services/event"
 
 import generateUUID from "../helper/generateUUID"
-import {hashPassword} from "../helper/passwordUtils"
 
 /**
- * Find all users.
+ * Find all event.
  *
  * @param {Object} req
  * @param {Object} res
@@ -12,10 +11,10 @@ import {hashPassword} from "../helper/passwordUtils"
  */
 export async function findAll(req, res, next) {
     try {
-        const response = await userService.findAll();
+        const response = await eventService.findAll();
 
         res.json({
-            response
+            data: response
         });
     } catch (err) {
         next(err);
@@ -23,7 +22,7 @@ export async function findAll(req, res, next) {
 }
 
 /**
- * Find users by id.
+ * Find event by id.
  *
  * @param {Object} req
  * @param {Object} res
@@ -31,10 +30,10 @@ export async function findAll(req, res, next) {
  */
 export async function findById(req, res, next) {
     try {
-        const response = await userService.findById(req.params.id);
+        const response = await eventService.findById(req.params.id);
 
         res.json({
-            response
+            data: response
         });
     } catch (err) {
         next(err);
@@ -42,7 +41,7 @@ export async function findById(req, res, next) {
 }
 
 /**
- * create user.
+ * create event.
  *
  * @param {Object} req
  * @param {Object} res
@@ -51,29 +50,29 @@ export async function findById(req, res, next) {
 export async function create(req, res, next) {
     try {
         const {
-            name,
-            email,
-            password
+            title,
+            note,
+            date,
         } = req.body
-        if (!name || !email || !password) {
+        if (!date || !title || !note) {
             throw new Error('Missing fields')
         } else {
 
             const id = generateUUID();
             const createDate = new Date();
             const data = {
-                user_id: id,
-                user_name: name,
-                user_email: email,
-                user_password: hashPassword(password),
+                event_id: id,
+                event_title: title,
+                event_date: date,
+                event_note: note,
                 created_at: createDate,
                 active: true
             }
 
-            const response = await userService.create(data);
+            const response = await eventService.create(data);
 
             res.json({
-                response
+                data: response
             });
         }
     } catch (err) {
@@ -82,7 +81,7 @@ export async function create(req, res, next) {
 }
 
 /**
- * update users by Id.
+ * update event by Id.
  *
  * @param {Object} req
  * @param {Object} res
@@ -91,27 +90,27 @@ export async function create(req, res, next) {
 export async function updateById(req, res, next) {
     try {
         const {
-            name,
-            email,
-            password,
+            title,
+            note,
+            date,
             active
         } = req.body
-        if (!name || !email || !password) {
+        if (!date || !title || !note) {
             throw new Error('Missing fields')
         } else {
             const updateDate = new Date();
             const data = {
-                user_name: name,
-                user_email: email,
-                user_password: hashPassword(password),
+                event_title: title,
+                event_note: note,
+                event_date: date,
                 updated_at: updateDate,
                 active: active
             }
 
-            const response = await userService.updateById(data, req.params.id);
+            const response = await eventService.updateById(data, req.params.id);
 
             res.json({
-                response
+                data: response
             });
         }
     } catch (err) {
@@ -122,7 +121,7 @@ export async function updateById(req, res, next) {
 
 
 /**
- * delete users by Id.
+ * delete event by Id.
  *
  * @param {Object} req
  * @param {Object} res
@@ -130,10 +129,10 @@ export async function updateById(req, res, next) {
  */
 export async function deleteById(req, res, next) {
     try {
-        const response = await userService.deleteById(req.params.id);
+        const response = await eventService.deleteById(req.params.id);
 
         res.json({
-            response
+            data: response
         });
     } catch (err) {
         next(err);
